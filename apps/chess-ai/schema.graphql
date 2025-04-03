@@ -1,0 +1,24 @@
+type GameCreated @entity(immutable: true) {
+  id: Bytes!
+  gameAddress: Bytes!
+  whitePlayer: Bytes!
+  blackPlayer: Bytes!
+  configId: Bytes!
+  transactionHash: Bytes!
+  blockTimestamp: BigInt!
+}
+
+type Player @entity {
+  id: ID!                
+  gamesPlayed: Int!       
+  totalMoves: Int! 
+  bestGameMoves: Int!
+  averageMoves: BigDecimal!
+}
+
+type Game @entity {
+  id: ID!
+  whitePlayer: Player!
+  movesCount: Int!
+  winner: Player!
+}

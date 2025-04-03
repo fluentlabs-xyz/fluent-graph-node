@@ -1,0 +1,51 @@
+specVersion: 1.2.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: ChessGameFactory
+    network: mainnet
+    source:
+      address: "0x78DbD656e730B0d87c27fA6B7625f1d90Acd7f39"
+      abi: ChessGameFactory
+      startBlock: 167195
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - GameCreated
+      abis:
+        - name: ChessGameFactory
+          file: ./abis/ChessGameFactory.json
+      eventHandlers:
+        - event: GameCreated(indexed address,indexed address,indexed address,bytes32)
+          handler: handleCreateGame
+      file: ./src/chess-game-factory.ts
+  
+  - kind: ethereum
+    name: ChessGame
+    network: mainnet
+    source:
+      address: "0x498bdF15af6E5A1d6d83CD46b4EaD509d1577e81"
+      abi: ChessGame
+      startBlock: 472
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - Player
+      abis:
+        - name: ChessGame
+          file: ./abis/ChessGame.json
+      eventHandlers:
+        - event: GameCreated(indexed uint256,indexed address,indexed address)
+          handler: handleGameCreated
+        - event: GameFinished(indexed uint256,indexed address,uint8)
+          handler: handleGameFinished
+        - event: MoveMade(indexed uint256,indexed address,string,string)
+          handler: handleMoveMade
+      file: ./src/chess-game.ts

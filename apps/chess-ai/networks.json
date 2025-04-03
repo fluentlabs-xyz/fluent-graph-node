@@ -1,0 +1,12 @@
+{
+  "mainnet": {
+    "ChessGameFactory": {
+      "address": "0x498bdF15af6E5A1d6d83CD46b4EaD509d1577e81",
+      "startBlock": 167195
+    },
+    "ChessGame": {
+      "address": "0x498bdF15af6E5A1d6d83CD46b4EaD509d1577e81",
+      "startBlock": 472
+    }
+  }
+}
