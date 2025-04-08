@@ -22,3 +22,12 @@ type Game @entity {
   movesCount: Int!
   winner: Player!
 }
+
+type Move @entity {
+  id: ID!
+  gameId: BigInt!
+  player: Bytes!
+  move: String!
+  newPosition: String!
+  timestamp: BigInt!
+}

@@ -38,6 +38,7 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - Player
+        - Move
       abis:
         - name: ChessGame
           file: ./abis/ChessGame.json

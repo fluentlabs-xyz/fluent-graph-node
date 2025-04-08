@@ -6,6 +6,7 @@ import {
 } from "../generated/ChessGame/ChessGame"
 import {
   Game,
+  Move,
   Player
 } from "../generated/schema"
 
@@ -36,9 +37,17 @@ export function handleGameCreated(event: GameCreated): void {
 export function handleMoveMade(event: MoveMade): void {
   let game = Game.load(event.params.gameId.toString());
   if (!game) return;
-  
   game.movesCount += 1;
   game.save();
+
+  let id = event.transaction.hash.toHex() + "-" + event.logIndex.toString()
+  let entity = new Move(id)
+  entity.gameId = event.params.gameId
+  entity.player = event.params.player
+  entity.move = event.params.move
+  entity.newPosition = event.params.newPosition
+  entity.timestamp = event.block.timestamp
+  entity.save()
 }
 
 export function handleGameFinished(event: GameFinished): void {
