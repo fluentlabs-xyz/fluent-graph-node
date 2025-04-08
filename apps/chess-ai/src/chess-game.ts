@@ -2,7 +2,8 @@ import { BigDecimal } from "@graphprotocol/graph-ts";
 import {
   GameFinished,
   MoveMade,
-  GameCreated
+  GameCreated,
+  ChessGame
 } from "../generated/ChessGame/ChessGame"
 import {
   Game,
@@ -41,12 +42,22 @@ export function handleMoveMade(event: MoveMade): void {
   game.save();
 
   let id = event.transaction.hash.toHex() + "-" + event.logIndex.toString()
+
   let entity = new Move(id)
   entity.gameId = event.params.gameId
   entity.player = event.params.player
   entity.move = event.params.move
   entity.newPosition = event.params.newPosition
   entity.timestamp = event.block.timestamp
+
+  let contract = ChessGame.bind(event.address)
+  let gameResult = contract.getGame(event.params.gameId)
+  if (gameResult) {
+    entity.previousPosition = gameResult.currentPosition
+  } else {
+    entity.previousPosition = ""
+  }
+
   entity.save()
 }
 

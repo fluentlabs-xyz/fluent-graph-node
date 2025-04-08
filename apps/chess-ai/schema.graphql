@@ -29,5 +29,6 @@ type Move @entity {
   player: Bytes!
   move: String!
   newPosition: String!
+  previousPosition: String!
   timestamp: BigInt!
 }
