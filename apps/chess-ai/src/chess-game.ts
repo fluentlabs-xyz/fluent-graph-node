@@ -38,26 +38,25 @@ export function handleGameCreated(event: GameCreated): void {
 export function handleMoveMade(event: MoveMade): void {
   let game = Game.load(event.params.gameId.toString());
   if (!game) return;
-  game.movesCount += 1;
-  game.save();
 
-  let id = event.transaction.hash.toHex() + "-" + event.logIndex.toString()
+  let previousMove: Move | null
+  previousMove = Move.load(event.params.gameId + "-" + game.movesCount)
 
-  let entity = new Move(id)
+  let entity = new Move(event.params.gameId + "-" + (game.movesCount + 1))
   entity.gameId = event.params.gameId
   entity.player = event.params.player
   entity.move = event.params.move
   entity.newPosition = event.params.newPosition
   entity.timestamp = event.block.timestamp
 
-  let contract = ChessGame.bind(event.address)
-  let gameResult = contract.getGame(event.params.gameId)
-  if (gameResult) {
-    entity.previousPosition = gameResult.currentPosition
+  if (previousMove) {
+    entity.previousPosition = previousMove.newPosition
   } else {
     entity.previousPosition = ""
   }
 
+  game.movesCount += 1;
+  game.save();
   entity.save()
 }
 
