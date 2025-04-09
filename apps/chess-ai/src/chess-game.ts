@@ -40,9 +40,9 @@ export function handleMoveMade(event: MoveMade): void {
   if (!game) return;
 
   let previousMove: Move | null
-  previousMove = Move.load(event.params.gameId + "-" + game.movesCount)
+  previousMove = Move.load(event.params.gameId.toHexString() + "-" + game.movesCount.toString())
 
-  let entity = new Move(event.params.gameId + "-" + (game.movesCount + 1))
+  let entity = new Move(event.params.gameId.toHexString() + "-" + (game.movesCount + 1).toString())
   entity.gameId = event.params.gameId
   entity.player = event.params.player
   entity.move = event.params.move
